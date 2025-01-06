@@ -1,2 +1,2 @@
-# Microrefugia_GEB
+# Microrefugia manuscript
 Code for the microrefugia paper.
