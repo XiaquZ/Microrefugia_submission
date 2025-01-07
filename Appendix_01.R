@@ -14,6 +14,9 @@ meerdaal <- vect(
     )
 meerdaal <- project(meerdaal, crs(sd))
 plot(meerdaal)
+writeVector(meerdaal,
+"E:/EuropeShapefile/Meerdaal/Meerdaal_LAEA_epsg3035.shp",
+overwrite = TRUE)
 
 # MI-Forward VoMC
 # Sweden
@@ -89,7 +92,7 @@ md_min <- mask(md_min, meerdaal)
 plot(md_min)
 writeRaster(
     md_min,
-    "E:/Output/MicrorefugiaIndex/Meerdaal/MI_MinTOffset_V2_crop_75kmBuffer_Res25m_meerdaal.tif",
+    "E:/Output/MicrorefugiaIndex/Meerdaal/MI_MinTOffset_V2_crop_Res25m_meerdaal.tif",
     overwrite = TRUE
 )
 
@@ -103,12 +106,12 @@ writeRaster(
     overwrite = TRUE
 )
 # Meerdaal
-md_min <- crop(minoffset, meerdaal)
-md_min <- mask(md_min, meerdaal)
-plot(md_min)
+md_wm <- crop(warmmag, meerdaal)
+md_wm <- mask(md_wm, meerdaal)
+plot(md_wm)
 writeRaster(
-    md_min,
-    "E:/Output/MicrorefugiaIndex/Meerdaal/MI_MinTOffset_V2_crop_75kmBuffer_Res25m_meerdaal.tif",
+    md_wm,
+    "E:/Output/MicrorefugiaIndex/Meerdaal/MI_warmingMag_Res25m_meerdaal.tif",
     overwrite = TRUE
 )
 
@@ -117,6 +120,7 @@ mf_single <- rast("E:/Output/Multifunctionality/MF_singleT0.8_EU_25m_EPSG3035.ti
 mf_ave <- rast("E:/Output/Multifunctionality/MF_average_5MIs_25m_V2.tif")
 
 # Single threshold multifunctionality.
+# Sweden
 sd_mfsingle <- crop(mf_single, sd)
 sd_mfsingle <- mask(sd_mfsingle, sd)
 plot(sd_mfsingle)
@@ -125,13 +129,32 @@ writeRaster(
     "E:/Output/MicrorefugiaIndex/VoCC/Sweden/MF_singleT0.8_75kmBuffer_Res25m_sweden.tif",
     overwrite = TRUE
 )
+#Meerdaal
+md_singleT <- crop(mf_single, meerdaal)
+md_singleT <- mask(md_singleT, meerdaal)
+plot(md_singleT)
+writeRaster(
+    md_singleT,
+    "E:/Output/Multifunctionality/Meerdaal/MF_singleT0.8_Res25m_meerdaal.tif",
+    overwrite = TRUE
+)
 
 # Average multifunctionality
+# Sweden
 sd_mfave <- crop(mf_ave, sd)
 sd_mfave <- mask(sd_mfave, sd)
 plot(sd_mfave)
 writeRaster(
     sd_mfave,
     "E:/Output/MicrorefugiaIndex/VoCC/Sweden/MF_average_75kmBuffer_Res25m_sweden.tif",
+    overwrite = TRUE
+)
+#Meerdaal
+md_ave <- crop(mf_ave, meerdaal)
+md_ave <- mask(md_ave, meerdaal)
+plot(md_ave)
+writeRaster(
+    md_ave,
+    "E:/Output/Multifunctionality/Meerdaal/MF_average_Res25m_meerdaal.tif",
     overwrite = TRUE
 )
