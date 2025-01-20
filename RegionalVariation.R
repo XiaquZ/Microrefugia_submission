@@ -24,10 +24,21 @@ warmmag <- rast(
 # Extract the MI based on xy coordinates.
 # Extract 10,000 rows for linear regression.
 mi_stack <- c(fvomc, bvomc, max, min, warmmag)
+set.seed(123)
 x <- spatSample(mi_stack, 10000, xy = TRUE, "regular", na.rm = TRUE)
 colnames(x) <- c("x", "y", "fvomc", "bvomc", "max", "min", "warmmag")	
 head(x)
 
+# Extract predictors based on xy coordinates.
+xy <- cbind(x$x, x$y)
 # Load the predictor layers.
+cover <- rast("E:/Input/Predictors/cover.tif")
+slope <- rast("E:/Input/Predictors/slope.tif")
 
-# Crop the predictor layers of Meerdaal.
+# Extra the predictor values.
+meerdaal_s <- x
+meerdaal_s$cover <- extract(cover, xy)$cover
+meerdaal_s$slope <- extract(slope, xy)$slope
+head(meerdaal_s)
+plot(meerdaal_s$bvomc, meerdaal_s$cover)
+plot(meerdaal_s$fvomc, meerdaal_s$slope)
