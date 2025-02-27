@@ -1,11 +1,11 @@
 library(terra)
 
 # Regional variation of microrefugia indices.
-fvomc <- rast("E:/Output/MicrorefugiaIndex/VoCC/MI_fvocc_75km_25m_add0.tif")
-bvomc <- rast("E:/Output/MicrorefugiaIndex/VoCC/MI_bvocc_75km_25m_add0.tif")
-maxoffset <- rast("E:/Output/MicrorefugiaIndex/Offset/MI_MaxTOffset_V2_crop.tif")
-minoffset <- rast("E:/Output/MicrorefugiaIndex/Offset/MI_MinTOffset_V2_crop.tif")
-warmmag <- rast("E:/Output/MicrorefugiaIndex/MI_WarmingMagnitude.tif")
+mi_fvomc <- rast("E:/Output/MicrorefugiaIndex/VoCC/MI_fvocc_75km_25m_add0.tif")
+mi_bvomc <- rast("E:/Output/MicrorefugiaIndex/VoCC/MI_bvocc_75km_25m_add0.tif")
+mi_maxoffset <- rast("E:/Output/MicrorefugiaIndex/Offset/MI_MaxTOffset_V2_crop.tif")
+mi_minoffset <- rast("E:/Output/MicrorefugiaIndex/Offset/MI_MinTOffset_V2_crop.tif")
+mi_warmmag <- rast("E:/Output/MicrorefugiaIndex/MI_WarmingMagnitude.tif")
 
 # Load regional shapefiles
 sd <- vect("E:/EuropeShapefile/Shapefiles/Sweden.shp")
