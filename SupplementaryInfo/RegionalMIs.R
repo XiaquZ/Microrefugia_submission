@@ -10,7 +10,7 @@ mi_warmmag <- rast("E:/Output/MicrorefugiaIndex/MI_WarmingMagnitude.tif")
 # Load regional shapefiles
 sd <- vect("E:/EuropeShapefile/Shapefiles/Sweden.shp")
 meerdaal <- vect(
-    "E:/EuropeShapefile/Meerdaal/ANB-grenzen-betanden-Meerdaalwoud-zonder-wegen.shp"
+    "H:/EuropeShapefile/Meerdaal/ANB-grenzen-betanden-Meerdaalwoud-zonder-wegen.shp"
     )
 meerdaal <- project(meerdaal, crs(sd))
 plot(meerdaal)
@@ -149,7 +149,7 @@ writeRaster(
     "E:/Output/MicrorefugiaIndex/VoCC/Sweden/MF_average_75kmBuffer_Res25m_sweden.tif",
     overwrite = TRUE
 )
-#Meerdaal
+# Meerdaal
 md_ave <- crop(mf_ave, meerdaal)
 md_ave <- mask(md_ave, meerdaal)
 plot(md_ave)
@@ -158,3 +158,9 @@ writeRaster(
     "E:/Output/Multifunctionality/Meerdaal/MF_average_Res25m_meerdaal.tif",
     overwrite = TRUE
 )
+
+#### Convert Meerdaal to data point. ####
+meerdaal_centroid <- centroids(meerdaal)
+writeVector(meerdaal_centroid,
+            "H:/EuropeShapefile/Meerdaal/meerdaal_centroid.shp",
+            overwrite = TRUE)
