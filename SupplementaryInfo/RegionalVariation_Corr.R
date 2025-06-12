@@ -2,14 +2,14 @@
 library(terra)
 
 # Load the shapefile of Meerdaal.
-meerdaal <- vect("H:/EuropeShapefile/")
+meerdaal <- vect("H:/EuropeShapefile/Meerdaal/Meerdaal_LAEA_epsg3035.shp")
 
-# Load the MI of Meerdaal.
+# Load the MI of European forests.
 mi.fvomc <- rast(
-    "H:/Output/MicrorefugiaIndex/VoCC/MI_fvocc_75km_25m_add0.tif"
+    "H:/Output/MicrorefugiaIndex/VoMC/MI_fvomc_mergeForestMI_V2_crop.tif"
 )
 mi.bvomc <- rast(
-    "H:/Output/MicrorefugiaIndex/VoCC/MI_bvocc_75km_25m_add0.tif"
+    "H:/Output/MicrorefugiaIndex/VoMC/MI_bvomc_mergeForestMI_V2_crop.tif"
 )
 mi.max <- rast(
     "H:/Output/MicrorefugiaIndex/Offset/MI_MaxTOffset_V2_crop.tif"
@@ -18,14 +18,31 @@ mi.min <- rast(
     "H:/Output/MicrorefugiaIndex/Offset/MI_MinTOffset_V2_crop.tif"
     )
 mi.warmmag <- rast(
-    "H:/Output/MicrorefugiaIndex/MI_WarmingMagnitude.tif"
+    "H:/Output/MicrorefugiaIndex/MI_microwarming_V2_25m_crop.tif"
     )
+
+# Load the MIs of Meerdaal.
+mi.fvomc <- rast(
+  "H:/Output/MicrorefugiaIndex/Meerdaal/MI_fvomc_v2_75kmBuffer_Res25m_meerdaal.tif"
+)
+mi.bvomc <- rast(
+  "H:/Output/MicrorefugiaIndex/Meerdaal/MI_bvocc_v2_75kmBuffer_Res25m_meerdaal.tif"
+)
+mi.max <- rast(
+  "H:/Output/MicrorefugiaIndex/Meerdaal/MI_MaxTOffset_V2_crop_Res25m_meerdaal.tif"
+)
+mi.min <- rast(
+  "H:/Output/MicrorefugiaIndex/Meerdaal/MI_MinTOffset_V2_crop_Res25m_meerdaal.tif"
+)
+mi.warmmag <- rast(
+  "H:/Output/MicrorefugiaIndex/Meerdaal/MI_warmingMag_v2_Res25m_meerdaal.tif"
+)
 
 # Extract the MI based on xy coordinates.
 # Extract 10,000 rows for linear regression.
 mi_stack <- c(mi.fvomc, mi.bvomc, mi.max, mi.min, mi.warmmag)
 set.seed(123)
-x <- spatSample(mi_stack, 10000, xy = TRUE, "regular", na.rm = TRUE)
+x <- spatSample(mi_stack, 3000, xy = TRUE, "random", na.rm = TRUE, exhaustive=TRUE)
 colnames(x) <- c("x", "y", "fvomc", "bvomc", "max", "min", "warmmag")	
 head(x)
 
@@ -33,12 +50,12 @@ head(x)
 xy <- cbind(x$x, x$y)
 
 # Load the predictor layers.
-cover <- rast("H:/Input/Predictors/cover.tif")
-slope <- rast("H:/Input/Predictors/slope.tif")
-coast <- rast("H:/Input/Predictors/coast.tif")
-elevation <- rast("H:/Input/Predictors/elevation.tif")
-relative_elev <- rast("H:/Input/Predictors/relative_elevation.tif")
-type <- rast("H:/Input/Predictors/type.tif")
+cover <- rast("H:/Input/Predictors_microclimate/cover.tif")
+slope <- rast("H:/Input/Predictors_microclimate/slope.tif")
+coast <- rast("H:/Input/Predictors_microclimate/coast.tif")
+elevation <- rast("H:/Input/Predictors_microclimate/elevation.tif")
+relative_elev <- rast("H:/Input/Predictors_microclimate/relative_elevation.tif")
+type <- rast("H:/Input/Predictors_microclimate/type.tif")
 
 
 # Extra the predictor values.
@@ -91,7 +108,7 @@ new_names <- c("MI: FVoMC", "MI: BVoMC", "MI: MaxTempOffset", "MI: MinTempOffset
 colnames(cor_matrix) <- rownames(cor_matrix) <- new_names
 
 # Create correlation plot with significance mask
-svg("I:/SVG/Cor_matrix_MIs_predictors.svg")
+svg("I:/SVG/Cor_matrix_MIs_predictors_meerdaal forests.svg")
 
 ggcorrplot(cor_matrix, 
            type = "lower", 
